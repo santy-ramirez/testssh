@@ -29,11 +29,13 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Spring boot code Deploy
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
-          REMOTE_HOST: ${{secrets.REMOTE_HOST}}
-          REMOTE_USER: ${{secrets.REMOTE_USER}}
+      -run: mkdir -p ~/.ssh/
+      -run: echo "{{ secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/private.key
+      #  - name: Spring boot code Deploy
+        #  uses: easingthemes/ssh-deploy@main
+        #  env:
+         #   SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+         #   REMOTE_HOST: ${{secrets.REMOTE_HOST}}
+          #  REMOTE_USER: ${{secrets.REMOTE_USER}}
 
       #Post deployment
