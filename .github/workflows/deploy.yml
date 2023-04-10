@@ -1,47 +1,45 @@
-name: Deployment
+name: Dev - Build and Deployment
+
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - master
+
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v1
-      - name: Set up JDK
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
         uses: actions/setup-java@v1
         with:
-          java-version: '17'
-      - name: Build with Maven
-        run: mvn -B package -DskipTests --file pom.xml
-      - name: Upload JAR
+          java-version: "17"
+      - name: Build application
+        run: |
+          mvn -B clean package -DskipTests --file pom.xml
+      - name: Upload WAR
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: target/actiongithub-0.0.1-SNAPSHOT.jar
+          path: target/cp-backend-0.0.1-SNAPSHOT.war
+
   deploy:
     needs: build
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Download JAR
+      - name: Download WAR
         uses: actions/download-artifact@v2
         with:
           name: artifact
-      #Deploy the artifact (JAR) into AWS Beanstalk
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v13
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          #aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
-          use_existing_version_if_available: false
-          application_name: helloaws
-          environment_name: Helloaws-env
-          version_label: ${{github.SHA}}
-          region: us-east-1
-          deployment_package: actiongithub-0.0.1-SNAPSHOT.jar
+
+      #Deploy the artifact into Ubuntu
+      - name: Spring boot code Deploy
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          REMOTE_HOST: ${{secrets.REMOTE_HOST}}
+          REMOTE_USER: ${{secrets.REMOTE_USER}}
+
+      #Post deployment
