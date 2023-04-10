@@ -21,8 +21,8 @@ jobs:
       - name: Upload WAR
         uses: actions/upload-artifact@v2
         with:
-          name: artifact
-          path: target/*.war
+          name: artifact-esa
+          path: target/cp-backend-0.0.1-SNAPSHOT.war
 
   deploy:
     needs: build
@@ -32,7 +32,7 @@ jobs:
       - name: Download WAR
         uses: actions/download-artifact@v2
         with:
-          name: artifact
+          name: artifact-esa
 
       #Deploy the artifact into Ubuntu
       - name: Spring boot code Deploy
