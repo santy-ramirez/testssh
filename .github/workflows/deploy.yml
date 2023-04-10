@@ -23,18 +23,16 @@ jobs:
         with:
           name: artifact-esa
           path: target/cp-backend-0.0.1-SNAPSHOT.war
+      - name: Download WAR
+        uses: actions/download-artifact@v3
+        with:
+          name: artifact-esa
 
   deploy:
     needs: build
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Download WAR
-        uses: actions/download-artifact@v3
-        with:
-          name: artifact-esa
-
-      #Deploy the artifact into Ubuntu
       - name: Spring boot code Deploy
         uses: easingthemes/ssh-deploy@main
         env:
