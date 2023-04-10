@@ -19,7 +19,7 @@ jobs:
         run: |
           mvn -B clean package -DskipTests --file pom.xml
       - name: Upload WAR
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: artifact-esa
           path: target/cp-backend-0.0.1-SNAPSHOT.war
@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Download WAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: artifact-esa
 
