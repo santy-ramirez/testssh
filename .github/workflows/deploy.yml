@@ -22,7 +22,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: artifact-esa
-          path: target/cp-backend-0.0.1-SNAPSHOT.war
+          path: artifact-esa
       - name: Download WAR
         uses: actions/download-artifact@v3
         with:
