@@ -22,7 +22,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: target/cp-backend-0.0.1-SNAPSHOT.war
+          path: target/*.war
 
   deploy:
     needs: build
